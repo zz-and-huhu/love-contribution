@@ -6,6 +6,21 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 12px;
+}
+
+:root {
+  --square-size: 15px;
+  --square-gap: 4px;
+  --week-width: calc(var(--square-size) + var(--square-gap));
+}
+
+ul {
+  list-style-type: none;
+}
+
 a {
   color: inherit;
   text-decoration: none;
