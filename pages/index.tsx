@@ -1,8 +1,8 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import Squares from "./components/squares";
 import { Client } from "@notionhq/client";
+import HeatMap from "./components/heatmap";
 
 export async function getStaticProps() {
   // Initializing a client
@@ -12,15 +12,21 @@ export async function getStaticProps() {
   const { results } = await notion.databases.query({
     database_id: "3d54c96cc6ae48f59030df4de612e5c9",
   });
-  const records = results.map((page) => {
-    const dt = new Date(page.created_time);
-    return dt.getDay();
-  });
-  console.log(records);
+  const now = new Date();
+  
+  const oneDay = 1000 * 60 * 60 * 24;
+  // const diff =
+  //     now.getTime() -
+  //     dt.getTime() +
+  //     (now.getTimezoneOffset() - dt.getTimezoneOffset()) * 60 * 1000;
+  const records = results
+    .map((page) => new Date(page.created_time))
+    .filter((tm) => now.getTime() - tm.getTime() < oneDay * 365)
+    .map((tm) => tm.getTime());
   return { props: { records } };
 }
 
-export default function Home({ records }: { records: string[] }) {
+export default function Home({ records }: { records: number[] }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -36,38 +42,7 @@ export default function Home({ records }: { records: string[] }) {
           <a href="https://github.com/iynewz/">@iynewz</a>
         </h1>
       </main>
-
-      <div className={styles.graph}>
-        <ul className={styles.months}>
-          <li>Jan</li>
-          <li>Feb</li>
-          <li>Mar</li>
-          <li>Apr</li>
-          <li>May</li>
-          <li>Jun</li>
-          <li>Jul</li>
-          <li>Aug</li>
-          <li>Sep</li>
-          <li>Oct</li>
-          <li>Nov</li>
-          <li>Dec</li>
-        </ul>
-        <ul className={styles.days}>
-          <li>Sun</li>
-          <li>Mon</li>
-          <li>Tue</li>
-          <li>Wed</li>
-          <li>Thu</li>
-          <li>Fri</li>
-          <li>Sat</li>
-        </ul>
-        <Squares length={365}></Squares>
-      </div>
-      <ul>
-        {records.map((record) => (
-          <li>{record}</li>
-        ))}
-      </ul>
+      <HeatMap records={records} />
       <footer className={styles.footer}>
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"

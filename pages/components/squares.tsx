@@ -1,14 +1,10 @@
 import styles from "../../styles/Home.module.css";
 
-function Squares(props: { length: number }) {
-  const { length } = props;
+function Squares({ counts }: { counts: number[] }) {
   return (
     <ul className={styles.squares}>
-      {Array.from({ length }, (k, v) => v + 1).map((i) => (
-        <li
-          className={styles.square}
-          data-level={Math.floor(Math.random() * 4)}
-        ></li>
+      {counts.map((count) => (
+        <li className={styles.square} data-level={Math.min(count, 3)}></li>
       ))}
     </ul>
   );
