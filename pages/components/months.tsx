@@ -10,8 +10,8 @@ function Months({ widths, months }: { widths: number[]; months: string[] }) {
           .join(" ")}`,
       }}
     >
-      {months.map((month) => (
-        <li>{month}</li>
+      {months.map((month, idx) => (
+        <li key={idx}>{month}</li>
       ))}
     </ul>
   );

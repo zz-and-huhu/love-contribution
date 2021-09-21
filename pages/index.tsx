@@ -22,7 +22,7 @@ export async function getStaticProps() {
   const records = results
     .map((page) => new Date(page.created_time))
     .filter((tm) => now.getTime() - tm.getTime() < oneDay * 365)
-    .map((tm) => tm.getTime());
+    .map((tm) => tm.getTime()).sort();
   return { props: { records } };
 }
 
